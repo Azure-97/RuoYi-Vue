@@ -44,6 +44,14 @@ public class SysPasswordService
     public void validate(SysUser user)
     {
         Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
+        /***
+         * @Author 84642
+         * @Description //TODO 线程获取上下文，所以需要判断是否为空（activiti查询任务时由于多线程获取不到上下文，待改进）
+         * @Date 22:48 2024/6/20
+         **/
+        if (usernamePasswordAuthenticationToken == null){
+            return;
+        }
         String username = usernamePasswordAuthenticationToken.getName();
         String password = usernamePasswordAuthenticationToken.getCredentials().toString();
 

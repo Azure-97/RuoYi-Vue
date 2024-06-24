@@ -53,6 +53,7 @@ module.exports = {
   },
   configureWebpack: {
     name: name,
+    devtool: 'source-map',// 打包生成source-map文件
     resolve: {
       alias: {
         '@': resolve('src')

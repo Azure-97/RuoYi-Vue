@@ -78,6 +78,7 @@ public class SysPermissionService
                 perms.addAll(menuService.selectMenuPermsByUserId(user.getUserId()));
             }
         }
+
         return perms;
     }
 }

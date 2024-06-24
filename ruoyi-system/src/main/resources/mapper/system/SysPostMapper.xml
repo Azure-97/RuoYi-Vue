@@ -71,7 +71,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectPostVo"/>
 		 where post_code=#{postCode} limit 1
 	</select>
-	
+
+	<select id="selectPostCodeByUserId" parameterType="Long" resultType="String">
+		select post_code from  sys_user_post up
+								   left join sys_post p on up.post_id=p.post_id
+		where up.user_id=#{userId}
+	</select>
+
 	<update id="updatePost" parameterType="SysPost">
  		update sys_post
  		<set>

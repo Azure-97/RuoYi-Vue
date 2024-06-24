@@ -90,6 +90,8 @@ public interface ISysUserService
      */
     public boolean checkEmailUnique(SysUser user);
 
+    public List<String>selectUserNameByPostCodeAndDeptId(String postCode,Long deptId);
+
     /**
      * 校验用户是否允许操作
      * 

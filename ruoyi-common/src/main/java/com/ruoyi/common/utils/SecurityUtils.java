@@ -3,6 +3,8 @@ package com.ruoyi.common.utils;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ruoyi.common.exception.CustomException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,6 +65,22 @@ public class SecurityUtils
         catch (Exception e)
         {
             throw new ServiceException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
+    /**
+     * 获取用户账户
+     **/
+    public static String getNickName()
+    {
+        try
+        {
+            return getLoginUser().getUser().getNickName();
+        }
+        catch (Exception e)
+        {
+            throw new CustomException("获取用户账户异常", HttpStatus.UNAUTHORIZED);
         }
     }
 

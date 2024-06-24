@@ -87,7 +87,18 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
-
+  activiti:
+    ## 指定在启动时是否检查流程定义的有效性。如果设置为false，Activiti将不会在启动时自动部署或验证流程定义，默认为true。
+    check-process-definitions: false
+    #  设置数据库模式更新策略。当设为true时，Activiti会根据当前的引擎版本自动更新数据库模式（例如，添加新表或列）。设为false则不会进行任何自动更新，需要手动维护数据库模式。
+    database-schema-update: true
+    ## 定义历史记录的级别。可选项包括'none', 'activity', 'audit', 和'full'。'full'级别会记录最详尽的历史信息，包括每一步的变量、任务和事件，适合需要全面审计跟踪的场景。
+    history-level: full
+    # 指示是否在数据库中使用历史记录。当与history-level一起使用时，确保历史数据按照所配置的历史级别被正确存储。
+    ## true表示启用，false表示禁用。
+    db-history-used: true
+  main:
+    allow-bean-definition-overriding: true
 # token配置
 token:
   # 令牌自定义标识

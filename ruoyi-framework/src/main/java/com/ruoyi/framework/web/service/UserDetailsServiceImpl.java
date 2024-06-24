@@ -1,8 +1,10 @@
 package com.ruoyi.framework.web.service;
 
+import com.ruoyi.system.service.ISysPostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +17,10 @@ import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.ISysUserService;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * 用户验证处理
  *
@@ -24,6 +30,10 @@ import com.ruoyi.system.service.ISysUserService;
 public class UserDetailsServiceImpl implements UserDetailsService
 {
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
+
+    @Autowired
+    private ISysPostService sysPostService;
 
     @Autowired
     private ISysUserService userService;
@@ -54,13 +64,24 @@ public class UserDetailsServiceImpl implements UserDetailsService
             throw new ServiceException(MessageUtils.message("user.blocked"));
         }
 
-        passwordService.validate(user);
+         passwordService.validate(user);
 
         return createLoginUser(user);
     }
 
     public UserDetails createLoginUser(SysUser user)
     {
-        return new LoginUser(user.getUserId(), user.getDeptId(), user, permissionService.getMenuPermission(user));
+
+        Set<String> postCode = sysPostService.selectPostCodeByUserId(user.getUserId());
+        postCode = postCode.parallelStream().map( s ->  "GROUP_" + s).collect(Collectors.toSet());
+        postCode.add("ROLE_ACTIVITI_USER");
+        List<SimpleGrantedAuthority> authorities = postCode.stream().map(s -> new SimpleGrantedAuthority(s)).collect(Collectors.toList());
+
+        return new LoginUser(user.getUserId()
+                , user.getDeptId()
+                , user
+                , permissionService.getMenuPermission(user),
+                authorities
+                );
     }
 }

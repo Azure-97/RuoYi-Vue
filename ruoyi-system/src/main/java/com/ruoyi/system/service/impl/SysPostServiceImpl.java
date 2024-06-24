@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
@@ -70,6 +72,17 @@ public class SysPostServiceImpl implements ISysPostService
     public List<Long> selectPostListByUserId(Long userId)
     {
         return postMapper.selectPostListByUserId(userId);
+    }
+
+    /**
+     * 根据用户ID获取PostCode
+     *
+     * @param userId 用户ID
+     * @return 选中岗位PostCode列表
+     */
+    @Override
+    public Set<String> selectPostCodeByUserId(Long userId) {
+        return postMapper.selectPostCodeByUserId(userId);
     }
 
     /**

@@ -3,8 +3,10 @@ package com.ruoyi.common.core.domain.model;
 import com.alibaba.fastjson2.annotation.JSONField;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -66,6 +68,8 @@ public class LoginUser implements UserDetails
      */
     private Set<String> permissions;
 
+    private List<SimpleGrantedAuthority> authorities;
+
     /**
      * 用户信息
      */
@@ -75,18 +79,19 @@ public class LoginUser implements UserDetails
     {
     }
 
-    public LoginUser(SysUser user, Set<String> permissions)
-    {
-        this.user = user;
-        this.permissions = permissions;
-    }
+//    public LoginUser(SysUser user, Set<String> permissions)
+//    {
+//        this.user = user;
+//        this.permissions = permissions;
+//    }
 
-    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions)
+    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions, List<SimpleGrantedAuthority> authorities)
     {
         this.userId = userId;
         this.deptId = deptId;
         this.user = user;
         this.permissions = permissions;
+        this.authorities = authorities;
     }
 
     public Long getUserId()
@@ -258,9 +263,14 @@ public class LoginUser implements UserDetails
         this.user = user;
     }
 
+    public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
-        return null;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        return authorities;
+
     }
 }

@@ -172,6 +172,17 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- activiti -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-activiti</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-workflow</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -182,6 +193,8 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-activiti</module>
+        <module>ruoyi-workflow</module>
     </modules>
     <packaging>pom</packaging>
 
