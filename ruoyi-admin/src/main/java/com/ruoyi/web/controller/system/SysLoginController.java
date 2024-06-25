@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import com.ruoyi.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,8 @@ public class SysLoginController
 
     @Autowired
     private SysPermissionService permissionService;
+    @Autowired
+    private ISysConfigService configService;
 
     /**
      * 登录方法
@@ -44,9 +48,17 @@ public class SysLoginController
     public AjaxResult login(@RequestBody LoginBody loginBody)
     {
         AjaxResult ajax = AjaxResult.success();
-        // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-                loginBody.getUuid());
+        String captchaSelect = configService.selectConfigByKey("sys.account.captchaSelect");
+        String token;
+        switch (captchaSelect) {
+            case "ajcaptcha":
+                //滑块验证码
+                token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode());
+                break;
+            default:
+                //计算验证码
+                token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(), loginBody.getUuid());
+        }
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }

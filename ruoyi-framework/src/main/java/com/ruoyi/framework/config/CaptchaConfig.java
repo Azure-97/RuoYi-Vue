@@ -9,13 +9,13 @@ import static com.google.code.kaptcha.Constants.*;
 
 /**
  * 验证码配置
- * 
+ *
  * @author ruoyi
  */
 @Configuration
 public class CaptchaConfig
 {
-    @Bean(name = "captchaProducer")
+    @Bean(name = "defautlCaptchaProducer")
     public DefaultKaptcha getKaptchaBean()
     {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
@@ -43,7 +43,7 @@ public class CaptchaConfig
         return defaultKaptcha;
     }
 
-    @Bean(name = "captchaProducerMath")
+    @Bean(name = "defautlCaptchaProducerMath")
     public DefaultKaptcha getKaptchaBeanMath()
     {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();

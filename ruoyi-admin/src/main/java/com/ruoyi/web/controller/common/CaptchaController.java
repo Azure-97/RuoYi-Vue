@@ -25,18 +25,18 @@ import com.ruoyi.system.service.ISysConfigService;
  * 
  * @author ruoyi
  */
-@RestController
+@RestController(value = "ruoyiCaptchaController")
 public class CaptchaController
 {
-    @Resource(name = "captchaProducer")
+    @Resource(name = "defautlCaptchaProducer")
     private Producer captchaProducer;
 
-    @Resource(name = "captchaProducerMath")
+    @Resource(name = "defautlCaptchaProducerMath")
     private Producer captchaProducerMath;
 
     @Autowired
     private RedisCache redisCache;
-    
+
     @Autowired
     private ISysConfigService configService;
     /**
@@ -52,6 +52,13 @@ public class CaptchaController
         {
             return ajax;
         }
+        String captchaSelect = configService.selectConfigByKey("sys.account.captchaSelect");
+        if (captchaSelect.equalsIgnoreCase("ajcaptcha")){
+            ajax.put("captchaSelect", "ajcaptcha");
+            return ajax;
+        }
+
+
 
         // 保存验证码信息
         String uuid = IdUtils.simpleUUID();
@@ -86,7 +93,7 @@ public class CaptchaController
         {
             return AjaxResult.error(e.getMessage());
         }
-
+        ajax.put("captchaSelect", "default");
         ajax.put("uuid", uuid);
         ajax.put("img", Base64.encode(os.toByteArray()));
         return ajax;
